@@ -29,6 +29,8 @@ export const styles = StyleSheet.create({
     height: 50,
     borderWidth: 1,
     borderColor: "black",
+    fontSize: 18,
+    paddingHorizontal: 10,
   },
   label: { fontSize: 28, fontWeight: "bold", alignSelf: "flex-start" },
   headerOne: {

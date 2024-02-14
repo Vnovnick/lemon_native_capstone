@@ -11,8 +11,12 @@ import {
 import logo from "../images/Logo.png";
 import cook from "../images/cook.png";
 import { styles } from "./onboardingStyles";
+import { useState } from "react";
+import { validateEmail, validateName } from "../utils/onboardingValidations";
 
 export default function Onboarding() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -41,12 +45,26 @@ export default function Onboarding() {
           <Image source={cook} style={styles.bodyImage} />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Name</Text>
-          <TextInput style={styles.textInput} />
+          <Text style={styles.label}>First Name</Text>
+          <TextInput
+            style={styles.textInput}
+            value={name}
+            onChangeText={setName}
+          />
           <Text style={styles.label}>Email</Text>
-          <TextInput style={styles.textInput} />
+          <TextInput
+            style={styles.textInput}
+            value={email}
+            onChangeText={setEmail}
+          />
         </View>
-        <Pressable style={styles.button}>
+        <Pressable
+          style={[
+            styles.button,
+            { opacity: validateEmail(email) && validateName(name) ? 1 : 0.5 },
+          ]}
+          disabled={!validateEmail(email)}
+        >
           <Text style={{ fontSize: 24, color: "white" }}>Next</Text>
         </Pressable>
       </ScrollView>
