@@ -40,14 +40,7 @@ export default function Onboarding() {
           <View>
             <Text style={styles.headerOne}>Little Lemon</Text>
             <Text style={styles.headerTwo}>Chicago</Text>
-            <Text
-              style={{
-                fontSize: 14,
-                width: 160,
-                marginTop: 10,
-                color: "white",
-              }}
-            >
+            <Text style={styles.textBlock}>
               We are a family owned Meditterranean restaurant, focused on
               traditional recipes served with a modern twist.
             </Text>
