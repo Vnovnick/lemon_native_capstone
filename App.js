@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import Onboarding from "./screens/Onboarding";
+import Onboarding from "./screens/Onboarding/Onboarding";
 
 export default function App() {
   return (
