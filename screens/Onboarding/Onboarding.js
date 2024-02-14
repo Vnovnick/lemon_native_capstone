@@ -13,10 +13,20 @@ import cook from "../images/cook.png";
 import { styles } from "./onboardingStyles";
 import { useState } from "react";
 import { validateEmail, validateName } from "../utils/onboardingValidations";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Onboarding() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+
+  const storeOnboardingData = async () => {
+    try {
+      await AsyncStorage.setItem("onboardingComplete", "true");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -63,6 +73,7 @@ export default function Onboarding() {
             styles.button,
             { opacity: validateEmail(email) && validateName(name) ? 1 : 0.5 },
           ]}
+          onPress={() => storeOnboardingData()}
           disabled={!validateEmail(email)}
         >
           <Text style={{ fontSize: 24, color: "white" }}>Next</Text>

@@ -49,7 +49,6 @@ export const styles = StyleSheet.create({
     width: 260,
   },
   header: {
-    marginTop: 20,
     marginHorizontal: "auto",
   },
   bodyImage: {
@@ -62,7 +61,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 10,
     borderRadius: 8,
-    marginTop: 60,
+    marginTop: 35,
     marginBottom: 25,
     marginLeft: "auto",
     marginRight: 25,
