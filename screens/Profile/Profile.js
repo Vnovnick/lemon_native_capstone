@@ -14,6 +14,11 @@ import Checkbox from "expo-checkbox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import { AppContext } from "../../AppContext";
+import {
+  validateEmail,
+  validateName,
+  validatePhone,
+} from "../utils/validations";
 
 export default function Profile() {
   const [clearLoading, setClearLoading] = useState(false);
@@ -111,7 +116,7 @@ export default function Profile() {
       await AsyncStorage.setItem("number", phoneNumber);
       await AsyncStorage.setItem("checkedVals", checkedStringified);
     } catch (error) {
-      console.log(error);
+      console.log("set profile data", error);
     }
   };
 
@@ -125,6 +130,12 @@ export default function Profile() {
     }
     setClearLoading(false);
   };
+
+  const fieldsValid = () =>
+    validateEmail(userEmail) &&
+    validateName(userFirstName) &&
+    validateName(userLastName) &&
+    validatePhone(phoneNumber);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -219,8 +230,12 @@ export default function Profile() {
             <Text style={styles.smallbuttonText}>Discard Changes</Text>
           </Pressable>
           <Pressable
-            style={[styles.bottomButtons, { backgroundColor: "black" }]}
+            style={[
+              styles.bottomButtons,
+              { backgroundColor: "black", opacity: fieldsValid() ? 1 : 0.5 },
+            ]}
             onPress={storeProfileData}
+            disabled={!fieldsValid()}
           >
             <Text style={styles.smallbuttonText}>Save Changes</Text>
           </Pressable>

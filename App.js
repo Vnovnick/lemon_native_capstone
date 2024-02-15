@@ -8,6 +8,8 @@ import Profile from "./screens/Profile/Profile";
 import ProfileNavHeader from "./screens/Profile/ProfileNavHeader";
 import OnboardingNavHeader from "./screens/Onboarding/OnboardingNavHeader";
 import { AppContext } from "./AppContext";
+import Home from "./screens/Home/Home";
+import HomeNavHeader from "./screens/Home/HomeNavHeader";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,13 +36,22 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           {onboardingComplete ? (
-            <Stack.Screen
-              name="Profile"
-              component={Profile}
-              options={{
-                header: () => <ProfileNavHeader />,
-              }}
-            />
+            <>
+              <Stack.Screen
+                name="Home"
+                component={Home}
+                options={{
+                  header: () => <HomeNavHeader />,
+                }}
+              />
+              <Stack.Screen
+                name="Profile"
+                component={Profile}
+                options={{
+                  header: () => <ProfileNavHeader />,
+                }}
+              />
+            </>
           ) : (
             <Stack.Screen
               name="Onboarding"
