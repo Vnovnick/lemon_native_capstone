@@ -49,14 +49,6 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     color: "white",
   },
-  logo: {
-    resizeMode: "contain",
-    height: 100,
-    width: 260,
-  },
-  header: {
-    marginHorizontal: "auto",
-  },
   bodyImage: {
     width: 130,
     height: "auto",

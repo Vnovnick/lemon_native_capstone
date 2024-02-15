@@ -38,7 +38,6 @@ export const styles = StyleSheet.create({
   headerTwo: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "white",
   },
   button: {
     backgroundColor: "black",
@@ -54,7 +53,8 @@ export const styles = StyleSheet.create({
     height: 62,
     width: 62,
     borderRadius: 90,
-    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
   },
   changeButton: {
     backgroundColor: "#0a6035",
@@ -68,4 +68,35 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
   },
+  emailView: {
+    width: "90%",
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "column",
+    rowGap: 20,
+  },
+  bottomButtonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: "90%",
+    justifyContent: "space-around",
+    marginVertical: 20,
+  },
+  logoutButton: {
+    width: "90%",
+    backgroundColor: "black",
+    marginTop: 20,
+    paddingHorizontal: 25,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  bottomButtons: {
+    paddingHorizontal: 25,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  largeButtonText: { fontSize: 24, color: "white", textAlign: "center" },
+  smallbuttonText: { fontSize: 15, color: "white", textAlign: "center" },
+  checkboxLabel: { marginLeft: 10, fontSize: 16, fontWeight: "600" },
+  checkboxContainer: { display: "flex", flexDirection: "row" },
 });

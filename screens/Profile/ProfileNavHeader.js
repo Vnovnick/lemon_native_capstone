@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, StyleSheet, Text, Pressable } from "react-native";
 import arrow from "../images/arrow-left.png";
 import logo from "../images/Logo.png";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileNavHeader() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [userFirstName, setUserFirstName] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        const firstName = await AsyncStorage.getItem("firstName");
+        setUserFirstName(firstName);
+      } catch (error) {
+        console.log("get profile nav async val error", error);
+      }
+      setIsLoading(false);
+    })();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Pressable style={styles.backContainer}>
@@ -11,7 +28,11 @@ export default function ProfileNavHeader() {
       </Pressable>
       <Image source={logo} style={styles.logo} />
       <View style={styles.avatar}>
-        <Text>av</Text>
+        {userFirstName && (
+          <Text style={{ fontSize: 22, color: "white" }}>
+            {userFirstName.slice(0, 2).toUpperCase()}
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -37,6 +58,10 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     borderWidth: 1,
     borderColor: "black",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "green",
   },
   backContainer: {
     height: 44,

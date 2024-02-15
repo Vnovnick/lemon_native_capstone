@@ -8,23 +8,29 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import logo from "../images/Logo.png";
 import cook from "../images/cook.png";
 import { styles } from "./onboardingStyles";
 import { useState } from "react";
-import { validateEmail, validateName } from "../utils/onboardingValidations";
+import { validateEmail, validateName } from "../utils/validations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAppContext } from "../../App";
 
 export default function Onboarding() {
+  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const { setOnboardingComplete } = useAppContext();
 
   const storeOnboardingData = async () => {
     try {
-      await AsyncStorage.setItem("onboardingComplete", "true");
+      setIsLoading(true);
+      await AsyncStorage.setItem("firstName", name);
+      await AsyncStorage.setItem("email", email);
+      setOnboardingComplete(true);
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -33,9 +39,6 @@ export default function Onboarding() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <View style={styles.header}>
-          <Image source={logo} style={styles.logo} />
-        </View>
         <View style={styles.body}>
           <View>
             <Text style={styles.headerOne}>Little Lemon</Text>
@@ -61,16 +64,23 @@ export default function Onboarding() {
             onChangeText={setEmail}
           />
         </View>
-        <Pressable
-          style={[
-            styles.button,
-            { opacity: validateEmail(email) && validateName(name) ? 1 : 0.5 },
-          ]}
-          onPress={() => storeOnboardingData()}
-          disabled={!validateEmail(email)}
-        >
-          <Text style={{ fontSize: 24, color: "white" }}>Next</Text>
-        </Pressable>
+        {isLoading && (
+          <Pressable style={styles.button}>
+            <Text style={{ fontSize: 24, color: "white" }}>Loading...</Text>
+          </Pressable>
+        )}
+        {!isLoading && (
+          <Pressable
+            style={[
+              styles.button,
+              { opacity: validateEmail(email) && validateName(name) ? 1 : 0.5 },
+            ]}
+            onPress={() => storeOnboardingData()}
+            disabled={!validateEmail(email)}
+          >
+            <Text style={{ fontSize: 24, color: "white" }}>Next</Text>
+          </Pressable>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
