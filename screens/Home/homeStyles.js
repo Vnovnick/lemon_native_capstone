@@ -38,14 +38,26 @@ export const styles = StyleSheet.create({
     height: "auto",
     resizeMode: "contain",
   },
-  button: {
-    backgroundColor: "black",
-    paddingHorizontal: 25,
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginTop: 35,
-    marginBottom: 25,
-    marginLeft: "auto",
-    marginRight: 25,
+  catScroll: {
+    columnGap: 20,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  catButton: {
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  catButtonText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 16,
+  },
+  deliveryHeader: {
+    alignSelf: "flex-start",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

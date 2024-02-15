@@ -10,3 +10,6 @@ export const validateName = (name) => nameRegex.test(name);
 const phoneRegex = /\(?\d{3}\)?-? *\d{3}-? *-?\d{4}/;
 
 export const validatePhone = (phoneNumber) => phoneRegex.test(phoneNumber);
+
+export const capitalizeFirstLetter = (str) =>
+  str[0].toUpperCase() + str.substring(1);
