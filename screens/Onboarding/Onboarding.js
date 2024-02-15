@@ -10,16 +10,16 @@ import {
 } from "react-native";
 import cook from "../images/cook.png";
 import { styles } from "./onboardingStyles";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { validateEmail, validateName } from "../utils/validations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAppContext } from "../../App";
+import { AppContext } from "../../AppContext";
 
 export default function Onboarding() {
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const { setOnboardingComplete } = useAppContext();
+  const { setOnboardingComplete } = useContext(AppContext);
 
   const storeOnboardingData = async () => {
     try {

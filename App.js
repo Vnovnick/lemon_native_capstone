@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { Text, View, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Onboarding from "./screens/Onboarding/Onboarding";
@@ -7,9 +7,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Profile from "./screens/Profile/Profile";
 import ProfileNavHeader from "./screens/Profile/ProfileNavHeader";
 import OnboardingNavHeader from "./screens/Onboarding/OnboardingNavHeader";
+import { AppContext } from "./AppContext";
 
 const Stack = createNativeStackNavigator();
-const AppContext = createContext(null);
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,5 +55,3 @@ export default function App() {
     </AppContext.Provider>
   );
 }
-
-export const useAppContext = () => useContext(AppContext);

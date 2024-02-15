@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -13,7 +13,7 @@ import { styles } from "./profileStyles";
 import Checkbox from "expo-checkbox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
-import { useAppContext } from "../../App";
+import { AppContext } from "../../AppContext";
 
 export default function Profile() {
   const [clearLoading, setClearLoading] = useState(false);
@@ -27,7 +27,7 @@ export default function Profile() {
   const [userEmail, setUserEmail] = useState("");
   const [image, setImage] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const { setOnboardingComplete } = useAppContext();
+  const { setOnboardingComplete } = useContext(AppContext);
 
   useEffect(() => {
     (async () => {
