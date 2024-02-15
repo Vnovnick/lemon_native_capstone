@@ -55,6 +55,8 @@ export default function Home() {
     })();
   }, []);
 
+  // TODO add data category and query filtering
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
