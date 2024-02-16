@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Image, StyleSheet, Text, Pressable } from "react-native";
 import logo from "../images/Logo.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../../AppContext";
 
 export default function HomeNavHeader() {
   const [isLoading, setIsLoading] = useState(false);
-  const [image, setImage] = useState("");
   const [userFirstName, setUserFirstName] = useState("");
   const navigation = useNavigation();
+  const { image, setImage } = useContext(AppContext);
 
   useEffect(() => {
     (async () => {

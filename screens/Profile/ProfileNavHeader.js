@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Image, StyleSheet, Text, Pressable } from "react-native";
 import arrow from "../images/arrow-left.png";
 import logo from "../images/Logo.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../../AppContext";
 
 export default function ProfileNavHeader() {
   const [isLoading, setIsLoading] = useState(false);
   const [userFirstName, setUserFirstName] = useState("");
-  const [image, setImage] = useState("");
   const navigation = useNavigation();
+  const [navImage, setNavImage] = useState("");
+  const { image } = useContext(AppContext);
 
   useEffect(() => {
     (async () => {
@@ -18,13 +20,13 @@ export default function ProfileNavHeader() {
         const firstName = await AsyncStorage.getItem("firstName");
         const userImage = await AsyncStorage.getItem("userImage");
         setUserFirstName(firstName);
-        setImage(userImage);
+        setNavImage(userImage);
       } catch (error) {
         console.log("get profile nav async val error", error);
       }
       setIsLoading(false);
     })();
-  }, []);
+  }, [image]);
 
   return (
     <View style={styles.container}>
@@ -35,8 +37,8 @@ export default function ProfileNavHeader() {
         <Image source={arrow} style={styles.backImage} />
       </Pressable>
       <Image source={logo} style={styles.logo} />
-      {image && <Image source={{ uri: image }} style={styles.avatar} />}
-      {!image && (
+      {navImage && <Image source={{ uri: navImage }} style={styles.avatar} />}
+      {!navImage && (
         <View style={styles.avatar}>
           {userFirstName && (
             <Text style={{ fontSize: 22, color: "white" }}>

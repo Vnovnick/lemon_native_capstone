@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [onboardingComplete, setOnboardingComplete] = useState(false);
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -32,7 +33,9 @@ export default function App() {
   if (isLoading) return <Text>Loading...</Text>;
 
   return (
-    <AppContext.Provider value={{ onboardingComplete, setOnboardingComplete }}>
+    <AppContext.Provider
+      value={{ onboardingComplete, setOnboardingComplete, image, setImage }}
+    >
       <NavigationContainer>
         <Stack.Navigator>
           {onboardingComplete ? (

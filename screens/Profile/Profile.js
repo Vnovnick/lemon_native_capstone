@@ -32,9 +32,8 @@ export default function Profile() {
   const [userFirstName, setUserFirstName] = useState("");
   const [userLastName, setUserLastName] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [image, setImage] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const { setOnboardingComplete } = useContext(AppContext);
+  const { setOnboardingComplete, image, setImage } = useContext(AppContext);
 
   useEffect(() => {
     (async () => {
@@ -113,7 +112,7 @@ export default function Profile() {
       await AsyncStorage.setItem("firstName", userFirstName);
       await AsyncStorage.setItem("lastName", userLastName);
       await AsyncStorage.setItem("email", userEmail);
-      await AsyncStorage.setItem("userImage", image);
+      if (image) await AsyncStorage.setItem("userImage", image);
       await AsyncStorage.setItem("number", phoneNumber);
       await AsyncStorage.setItem("checkedVals", checkedStringified);
       Alert.alert("Profile Info Saved!");
