@@ -5,25 +5,30 @@ import {
   KeyboardAvoidingView,
   Platform,
   FlatList,
-  Pressable,
-  ScrollView,
+  TextInput,
 } from "react-native";
 import cook from "../images/cook.png";
 import { styles } from "./homeStyles";
-import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../AppContext";
+import { useCallback, useMemo, useEffect, useState } from "react";
 import { menuDataUrl } from "./apiDefinitions";
+import debounce from "lodash.debounce";
 import MenuItem from "./MenuItem";
-import { createTable, getMenuItems, saveMenuItems } from "../../database";
-import { capitalizeFirstLetter } from "../utils/validations";
+import {
+  createTable,
+  filterByQueryAndCategories,
+  getMenuItems,
+  saveMenuItems,
+} from "../../database";
+import CategorySelector from "./CategorySelector";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [menuData, setMenuData] = useState([]);
-  const { setOnboardingComplete } = useContext(AppContext);
   const categories = ["starters", "mains", "desserts", "drinks", "specials"];
+  const [query, setQuery] = useState("");
+  const [search, setSearch] = useState("");
+  const [filterSelections, setFilterSelections] = useState(
+    categories.map(() => false)
+  );
 
   const fetchData = async () => {
     let fetchedData = [];
@@ -44,7 +49,6 @@ export default function Home() {
 
         if (!menuItems.length) {
           const menuItems = await fetchData();
-          console.log("fetched data", menuItems.menu);
           saveMenuItems(menuItems.menu);
         }
         menuItems = await getMenuItems();
@@ -55,7 +59,34 @@ export default function Home() {
     })();
   }, []);
 
-  // TODO add data category and query filtering
+  useEffect(() => {
+    (async () => {
+      const activeCats = categories.filter((str, index) => {
+        if (filterSelections.every((sel) => sel === false)) {
+          return true;
+        }
+        return filterSelections[index];
+      });
+
+      try {
+        const menuItems = await filterByQueryAndCategories(query, activeCats);
+        setMenuData(menuItems);
+      } catch (error) {
+        console.log("error filtering by cats", error);
+      }
+    })();
+  }, [filterSelections, query]);
+
+  const lookup = useCallback((q) => {
+    setQuery(q);
+  }, []);
+
+  const debouncedLookup = useMemo(() => debounce(lookup, 500), [lookup]);
+
+  const handleSearchChange = (text) => {
+    setSearch(text);
+    debouncedLookup(text);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -63,27 +94,31 @@ export default function Home() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <View style={styles.body}>
-        <View>
-          <Text style={styles.headerOne}>Little Lemon</Text>
-          <Text style={styles.headerTwo}>Chicago</Text>
-          <Text style={styles.textBlock}>
-            We are a family owned Meditterranean restaurant, focused on
-            traditional recipes served with a modern twist.
-          </Text>
+        <View style={styles.bodyContent}>
+          <View>
+            <Text style={styles.headerOne}>Little Lemon</Text>
+            <Text style={styles.headerTwo}>Chicago</Text>
+            <Text style={styles.textBlock}>
+              We are a family owned Meditterranean restaurant, focused on
+              traditional recipes served with a modern twist.
+            </Text>
+          </View>
+          <Image source={cook} style={styles.bodyImage} />
         </View>
-        <Image source={cook} style={styles.bodyImage} />
+        <TextInput
+          style={styles.searchBar}
+          value={search}
+          onChangeText={handleSearchChange}
+          placeholder="Search"
+        />
       </View>
       <View style={{ height: 80, alignSelf: "flex-start", paddingLeft: 15 }}>
         <Text style={styles.deliveryHeader}>ORDER FOR DELIVERY!</Text>
-        <ScrollView horizontal contentContainerStyle={styles.catScroll}>
-          {categories.map((cat) => (
-            <Pressable key={cat} style={styles.catButton}>
-              <Text style={styles.catButtonText}>
-                {capitalizeFirstLetter(cat)}
-              </Text>
-            </Pressable>
-          ))}
-        </ScrollView>
+        <CategorySelector
+          filterSelections={filterSelections}
+          setFilterSelections={setFilterSelections}
+          categories={categories}
+        />
       </View>
       <FlatList
         contentContainerStyle={{ alignItems: "stretch", paddingHorizontal: 15 }}

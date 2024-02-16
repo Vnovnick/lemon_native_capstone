@@ -8,6 +8,7 @@ import {
   TextInput,
   Pressable,
   Image,
+  Alert,
 } from "react-native";
 import { styles } from "./profileStyles";
 import Checkbox from "expo-checkbox";
@@ -23,6 +24,7 @@ import {
 export default function Profile() {
   const [clearLoading, setClearLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaveLoading, setIsSaveLoading] = useState(false);
   const [orderChecked, setOrderChecked] = useState(false);
   const [passwordChecked, setPasswordChecked] = useState(false);
   const [specialChecked, setSpecialChecked] = useState(false);
@@ -71,8 +73,6 @@ export default function Profile() {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -109,15 +109,18 @@ export default function Profile() {
       newslettersChecked,
     });
     try {
+      setIsSaveLoading(true);
       await AsyncStorage.setItem("firstName", userFirstName);
       await AsyncStorage.setItem("lastName", userLastName);
       await AsyncStorage.setItem("email", userEmail);
       await AsyncStorage.setItem("userImage", image);
       await AsyncStorage.setItem("number", phoneNumber);
       await AsyncStorage.setItem("checkedVals", checkedStringified);
+      Alert.alert("Profile Info Saved!");
     } catch (error) {
       console.log("set profile data", error);
     }
+    setIsSaveLoading(false);
   };
 
   const clearData = async () => {
@@ -232,12 +235,17 @@ export default function Profile() {
           <Pressable
             style={[
               styles.bottomButtons,
-              { backgroundColor: "black", opacity: fieldsValid() ? 1 : 0.5 },
+              {
+                backgroundColor: isSaveLoading ? "rgba(0, 0, 0, 0.5)" : "black",
+                opacity: fieldsValid() ? 1 : 0.5,
+              },
             ]}
             onPress={storeProfileData}
-            disabled={!fieldsValid()}
+            disabled={!fieldsValid() || isSaveLoading}
           >
-            <Text style={styles.smallbuttonText}>Save Changes</Text>
+            <Text style={styles.smallbuttonText}>
+              {isSaveLoading ? "Loading..." : "Save Changes"}
+            </Text>
           </Pressable>
         </View>
       </ScrollView>

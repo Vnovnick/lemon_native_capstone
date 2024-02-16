@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function HomeNavHeader() {
   const [isLoading, setIsLoading] = useState(false);
+  const [image, setImage] = useState("");
   const [userFirstName, setUserFirstName] = useState("");
   const navigation = useNavigation();
 
@@ -14,9 +15,11 @@ export default function HomeNavHeader() {
       try {
         setIsLoading(true);
         const firstName = await AsyncStorage.getItem("firstName");
+        const userImage = await AsyncStorage.getItem("userImage");
         setUserFirstName(firstName);
+        setImage(userImage);
       } catch (error) {
-        console.log("get profile nav async val error", error);
+        console.log("get home nav async val error", error);
       }
       setIsLoading(false);
     })();
@@ -26,16 +29,23 @@ export default function HomeNavHeader() {
     <View style={styles.container}>
       <View style={{ width: 44 }} />
       <Image source={logo} style={styles.logo} />
-      <Pressable
-        style={styles.avatar}
-        onPress={() => navigation.navigate("Profile")}
-      >
-        {userFirstName && (
-          <Text style={{ fontSize: 22, color: "white" }}>
-            {userFirstName.slice(0, 2).toUpperCase()}
-          </Text>
-        )}
-      </Pressable>
+      {image && (
+        <Pressable onPress={() => navigation.navigate("Profile")}>
+          <Image source={{ uri: image }} style={styles.avatar} />
+        </Pressable>
+      )}
+      {!image && (
+        <Pressable
+          style={styles.avatar}
+          onPress={() => navigation.navigate("Profile")}
+        >
+          {userFirstName && (
+            <Text style={{ fontSize: 22, color: "white" }}>
+              {userFirstName.slice(0, 2).toUpperCase()}
+            </Text>
+          )}
+        </Pressable>
+      )}
     </View>
   );
 }

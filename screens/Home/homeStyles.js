@@ -13,9 +13,23 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 30,
     paddingBottom: 40,
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  bodyContent: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "100%",
+  },
+  searchBar: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    width: "90%",
+    height: 50,
+    marginTop: 20,
+    marginHorizontal: "auto",
+    paddingHorizontal: 5,
   },
   headerOne: {
     fontSize: 28,
@@ -45,13 +59,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   catButton: {
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
     borderRadius: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
   catButtonText: {
-    color: "white",
     fontWeight: "700",
     fontSize: 16,
   },

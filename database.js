@@ -27,15 +27,6 @@ export async function getMenuItems() {
 }
 
 export function saveMenuItems(menuItems) {
-  console.log(
-    "items",
-    menuItems
-      .map(
-        (item) =>
-          `('${item.name}', '${item.price}', '${item.category}', '${item.description}', '${item.image}')`
-      )
-      .join(", ")
-  );
   db.transaction((tx) => {
     tx.executeSql(
       `insert into menu (name, price, category, description, image) values ${menuItems
@@ -52,14 +43,14 @@ export function saveMenuItems(menuItems) {
     );
   });
 }
-
+// query sql part - and title like '%${query}%'
 export async function filterByQueryAndCategories(query, activeCategories) {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `select * from menuitems where category in (${activeCategories
+        `select * from menu where category in (${activeCategories
           .map((category) => `'${category}'`)
-          .join(", ")}) and title like '%${query}%'`,
+          .join(", ")}) and name like '%${query}%'`,
         [],
         (_, { rows }) => {
           resolve(rows._array);
